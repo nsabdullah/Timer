@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta name="theme-color" content="#0f7a4f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>স্টাডি র‍্যাংকিং ডেমো</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f6f3;--card:#fff;--tx:#18271f;--mu:#68776f;--ac:#0f7a4f;--ac2:#e3f3ea;--bd:#dfe5e0;--me:#fff2cc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1411;--card:#17201b;--tx:#e6efe9;--mu:#8fa196;--ac:#3fcf8e;--ac2:#1c2f25;--bd:#27342d;--me:#3a3314}}
+:root[data-theme="dark"]{--bg:#0e1411;--card:#17201b;--tx:#e6efe9;--mu:#8fa196;--ac:#3fcf8e;--ac2:#1c2f25;--bd:#27342d;--me:#3a3314}
+*{box-sizing:border-box}html,body{margin:0;touch-action:manipulation;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;max-width:560px;margin:0 auto;padding:12px}
+h1{font-size:19px;margin:4px 0 2px}.sub{color:var(--mu);font-size:13px;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats b{display:block;font-size:15px}.stats span{font-size:11px;color:var(--mu)}
+.clock{display:flex;align-items:center;gap:10px}.clock b{font-size:16px;min-width:110px}
+input[type=range]{flex:1;accent-color:var(--ac)}
+button{background:var(--ac);color:var(--card);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer}
+button.g{background:var(--ac2);color:var(--ac)}
+input[type=time],input[type=number],input[type=search]{background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:7px;font:inherit;font-size:16px;max-width:100%}
+.me{background:var(--me);border-color:transparent}
+.rowf{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:13px}
+.chip{background:var(--ac2);color:var(--ac);border-radius:20px;padding:3px 9px;font-size:12px;display:inline-flex;gap:6px;align-items:center}
+.chip i{cursor:pointer;font-style:normal}
+.big{font-size:22px;font-weight:700}
+.lb{padding:4px 0}
+.r{position:relative;display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:10px;font-size:14px;overflow:hidden}
+.r .bar{position:absolute;inset:0 auto 0 0;background:var(--ac2);z-index:0}
+.r>*:not(.bar){position:relative;z-index:1}
+.r .k{width:52px;font-weight:700;text-align:center}.r .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r .t{color:var(--mu);font-size:13px}.r.me{background:var(--me)}.r.me .bar{display:none}
+.dots{text-align:center;color:var(--mu)}
+body{padding-bottom:78px}.pg{display:none}.pg.on{display:block}
+#nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nv{flex:1;background:none;color:var(--mu);border-radius:0;padding:9px 2px;font-size:12px;line-height:1.4}.nv.on{color:var(--ac);font-weight:700}
+.bar{fill:var(--ac)}.gl{stroke:var(--bd);stroke-width:1}.tx{fill:var(--mu);font-size:9px;font-family:inherit}.ln{fill:none;stroke:var(--ac);stroke-width:2}.av{stroke:var(--mu);stroke-dasharray:4 3;stroke-width:1}.dt{fill:var(--ac)}
+button{min-height:40px}.nv{min-height:50px}select,input[type=time],input[type=number],input[type=date]{min-height:40px}.r{transition:background .3s}@property --p{syntax:'<number>';inherits:false;initial-value:0}#ring{background:conic-gradient(var(--ac) calc(var(--p)*1%),var(--ac2) 0);transition:--p 1s ease}
+@font-face{font-family:"Hind Siliguri";font-weight:400;src:local("Hind Siliguri"),url(fonts/HindSiliguri-Regular.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Hind Siliguri";font-weight:700;src:local("Hind Siliguri Bold"),url(fonts/HindSiliguri-Bold.woff2) format("woff2");font-display:swap}</style></head><body>
+<h1>📚 স্টাডি র‍্যাংকিং ডেমো<button class="g" id="th" style="float:right;padding:4px 8px;font-size:13px">🌓 অটো</button></h1>
+<div id="ob" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:50;padding:24px;flex-direction:column;justify-content:center;gap:12px"><div style="font-size:24px;font-weight:700">📚 স্বাগতম!</div><div class="sub">আপনার নাম লিখুন — র্যাংকিং লিস্টে এই নামেই দেখাবে</div><input id="nm" type="text" maxlength="40" placeholder="আপনার নাম" style="background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:12px;font:inherit;font-size:16px"><button id="nb" style="padding:12px;font-size:16px">শুরু করুন</button></div>
+<div class="sub">৩০,০০০ শিক্ষার্থী · ডিভাইসের সময় অনুযায়ী লাইভ · সারাদিনে সর্বোচ্চ ১০ ঘণ্টা</div>
+
+<div class="card" id="top">
+  <div id="ban" style="font-size:15px;line-height:1.5;margin-bottom:8px"></div><div class="clock"><b id="tl"></b></div>
+  <div class="stats" style="margin-top:10px"><div><b id="sa"></b><span>গড় সময়</span></div><div><b id="st"></b><span>সর্বোচ্চ</span></div><div><b id="sn"></b><span>🔴 এখন লাইভ পড়ছে</span></div></div>
+</div>
+
+<div class="pg" id="p1"><button id="bs" style="width:100%;padding:18px;font-size:19px;margin-bottom:10px;border-radius:14px"></button><div class="card" id="dx"><div id="dt" style="font-size:14px;color:var(--mu)"></div><div id="al" style="font-size:12px;margin-top:2px"></div>
+<div style="display:flex;align-items:center;gap:16px;margin-top:10px"><div id="ring" style="width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none"><div id="rt" style="width:68px;height:68px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700"></div></div><div id="sk" style="flex:1;font-size:14px;line-height:1.8"></div></div>
+<div class="rowf"><button class="g" id="fc" style="flex:1">🔍 ফোকাস মোড</button><button class="g" id="sh" style="flex:1">📤 শেয়ার কার্ড</button></div><div id="pt" style="font-size:13px;margin-top:6px"></div>
+<details style="margin-top:10px"><summary style="cursor:pointer;color:var(--mu);font-size:13px">⚙️ আরও অপশন</summary>
+<div class="rowf">🎯 দৈনিক লক্ষ্য: <input id="gh" type="number" min="1" max="16" step="0.5" style="width:62px"> ঘণ্টা <button class="g" id="pm"></button></div>
+<div class="rowf"><span>দ্রুত যোগ:</span><button class="g" data-q="30">+৩০ মি</button><button class="g" data-q="60">+১ ঘণ্টা</button><button class="g" id="fz">🧊 স্ট্রিক ফ্রিজ</button></div>
+<div class="rowf">📅 পরীক্ষা: <input id="xd" type="date"> লক্ষ্য <input id="xt" type="number" min="1" style="width:70px" placeholder="মোট ঘ."></div><div id="xs" style="font-size:13px;margin-top:4px"></div>
+<div style="font-size:13px;color:var(--mu);margin-top:10px">📚 বিষয় ও সেশন</div><div class="rowf"><span>বিষয়:</span><button class="g" id="sbtn" style="flex:1;text-align:left"></button><select id="sj" style="display:none"></select></div><details style="margin-top:8px"><summary style="cursor:pointer;color:var(--mu);font-size:13px">✍️ হাতে সময় যোগ করুন</summary><div class="rowf"><span>সেশন:</span><input id="a" type="time" value="08:00"><span>থেকে</span><input id="b" type="time" value="10:00"><button id="add">যোগ</button></div>
+  <div class="rowf"><span>অথবা মোট:</span><input id="eh" type="number" min="0" max="24" placeholder="ঘণ্টা" style="width:70px"><input id="em" type="number" min="0" max="59" placeholder="মিনিট" style="width:70px"><button class="g" id="addx">মোট যোগ</button></div>
+  </details><div class="rowf" id="chips"></div><div style="font-size:13px;color:var(--mu);margin-top:10px">🏅 ব্যাজ</div><div class="rowf" id="bd" style="margin-top:4px"></div></details></div><div class="card me">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;color:var(--mu)">আপনার র‍্যাংক</div><div class="big" id="mr"></div><div style="font-size:12px;color:var(--mu)"><span id="myn"></span> <i id="ed" style="cursor:pointer;font-style:normal">✏️</i></div></div><div style="text-align:right"><div style="font-size:12px;color:var(--mu)">আপনার পড়া</div><div class="big" id="mt"></div></div></div>
+  <div id="mp" style="font-size:12px;color:var(--mu);margin-top:2px"></div>
+  <div class="rowf" style="display:none"><button id="sw">▶ পড়া শুরু করুন</button><span id="swt"></span></div>
+  
+  <div id="hist" style="font-size:12px;color:var(--mu);margin-top:8px"></div>
+  
+</div>
+
+</div><div class="pg" id="p3"><div class="card"><div style="font-weight:700;margin-bottom:6px">📊 আমার পড়ার চার্ট</div>
+  <div class="rowf" style="margin:0 0 6px"><button data-c="1">দৈনিক</button><button class="g" data-c="2">ট্রেন্ড</button><button class="g" data-c="3">সময়ভিত্তিক</button><button class="g" data-c="6">হিটম্যাপ</button><button class="g" data-c="5">বিষয়ভিত্তিক</button><button class="g" data-c="4">বারভিত্তিক</button></div>
+  <div id="cs"></div><div id="cn" class="sub" style="margin:4px 0 0"></div><div id="sm" style="font-size:13px;margin-top:8px;line-height:1.7"></div><div id="wr" style="font-size:13px;margin-top:10px;line-height:1.7;background:var(--ac2);border-radius:10px;padding:8px"></div>
+<div style="font-weight:700;margin:14px 0 6px">📝 মক টেস্ট স্কোর</div><div class="rowf" style="margin:0"><input id="mks" type="number" min="0" placeholder="পেয়েছি" style="width:80px"> / <input id="mkt" type="number" min="1" placeholder="মোট" style="width:80px"><button id="mka">যোগ</button><button class="g" id="mkd">শেষটা মুছুন</button></div><div id="mkv"></div></div>
+</div><div class="pg" id="p2"><div class="card lb">
+  <div class="rowf" style="margin:0 0 8px"><button id="t1">🏆 র‍্যাংকিং</button><button class="g" id="t2">🟢 এখন পড়ছে</button></div>
+  <div class="rowf" style="margin:0 0 6px"><button data-f="all">সবাই</button><button class="g" data-f="b">ছেলে</button><button class="g" data-f="g">মেয়ে</button><button class="g" data-f="t">টপ ১০০</button></div><div class="rowf" style="margin:0 0 6px"><button data-p2="d">আজ</button><button class="g" data-p2="w">সাপ্তাহিক</button><button class="g" data-p2="m">মাসিক</button></div><div class="rowf" style="margin:0 0 6px"><button data-u2="-1">সব ইউনিট</button><button class="g" data-u2="0">কুবি বি</button><button class="g" data-u2="1">ঢাবি খ</button><button class="g" data-u2="2">ঢাবি ক</button><button class="g" data-u2="3">রাবি</button></div><input id="q" type="search" placeholder="নাম দিয়ে খুঁজুন…" style="width:100%;margin-bottom:6px">
+  <div id="lb"></div><button class="g" id="more" style="width:100%;margin-top:8px">আরও দেখান</button>
+</div>
+
+</div><div class="pg" id="p5">
+<div class="card me"><div style="font-size:13px;color:var(--mu)">🎯 লক্ষ্য: ২০,০০০ মিনিট পড়লেই ১ম স্থান — প্রতি ১ মিনিটে ১ জন স্টুডেন্টকে পেছনে ফেলবেন (১০ ঘণ্টা = ৬০০ জন)</div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><div><div style="font-size:12px;color:var(--mu)">আপনার অবস্থান</div><div class="big" id="gr"></div></div><div style="text-align:right"><div style="font-size:12px;color:var(--mu)">মোট পড়া</div><div class="big" id="gt"></div></div></div>
+<div style="background:var(--ac2);border-radius:8px;height:10px;margin:10px 0 6px;overflow:hidden"><div id="gb" style="height:100%;background:var(--ac);width:0"></div></div>
+<div style="font-size:13px" id="gp"></div><div style="font-size:13px;color:var(--mu)" id="gl"></div></div>
+<div class="card"><div style="font-weight:700;margin-bottom:6px">🔥 আপনার আশেপাশে</div><div id="gn"></div></div>
+<div class="card"><div style="font-weight:700;margin-bottom:6px">🏆 ২০,০০০ জনের তালিকা</div><div id="gls"></div><button class="g" id="gmore" style="width:100%;margin-top:8px">আরও দেখান</button></div>
+</div><div class="pg" id="p4">
+<div class="card"><div style="font-weight:700;margin-bottom:6px">💾 মোট ও তারিখভিত্তিক ডেটা</div><div id="tot" style="font-size:14px;margin-bottom:6px"></div><div id="dl" style="font-size:13px;max-height:260px;overflow:auto"></div></div>
+<div class="card"><div style="font-weight:700">⬇️ এক্সপোর্ট</div><div class="sub">নাম ও সব দিনের সেশন একটা ফাইলে সেভ হবে</div><div class="rowf"><button id="ex">ফাইল ডাউনলোড</button><button class="g" id="rb"></button><button class="g" id="cp">কপি করুন</button></div></div>
+<div class="card"><div style="font-weight:700">⬆️ ইমপোর্ট</div><div class="sub">আগের ফাইল আপলোড করলে সব ডেটা আগের মতো ফিরে আসবে (বর্তমান ডেটা বদলে যাবে)</div><div class="rowf"><button id="im">ফাইল বেছে নিন</button><input id="fi" type="file" accept=".json,application/json" style="display:none"></div><textarea id="ta" rows="3" placeholder="অথবা এক্সপোর্ট করা টেক্সট এখানে পেস্ট করুন" style="width:100%;margin-top:8px;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px;font:inherit;font-size:16px"></textarea><div class="rowf"><button class="g" id="ip">টেক্সট থেকে ইমপোর্ট</button></div><div id="ms" style="font-size:13px;margin-top:8px"></div></div>
+</div>
+<div id="mn" style="display:none;position:fixed;left:8px;right:8px;bottom:calc(58px + env(safe-area-inset-bottom,0px));z-index:19;background:var(--ac);color:var(--card);border-radius:14px;padding:8px 12px;align-items:center;justify-content:space-between"><b id="mnt"></b><button id="mns" style="background:var(--card);color:var(--ac)">⏹ থামান</button></div><div id="sm2" style="display:none;position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.45);align-items:flex-end;justify-content:center"><div style="background:var(--card);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:16px;max-height:80%;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px"><span>📚 বিষয়</span><button class="g" id="sx2">✕</button></div><div id="sl"></div><div class="rowf"><input id="sn2" type="text" maxlength="20" placeholder="নতুন বিষয়ের নাম" style="flex:1"><button id="sa5">＋ যোগ</button></div></div></div><div id="fo" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:55;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px"><div id="fr" style="font-size:18px"></div><div id="fk" style="font-size:56px;font-weight:700"></div><div id="fp" style="font-size:16px;color:var(--mu)"></div><button id="fs" style="padding:12px 28px;font-size:16px">⏹ থামান</button><button class="g" id="fn">🌧 সাউন্ড: বন্ধ</button><button class="g" id="fx">✕ বন্ধ করুন</button></div><nav id="nav"><button class="nv" data-p="1">🏠<br>হোম</button><button class="nv" data-p="2">🏆<br>র্যাংকিং</button><button class="nv" data-p="5">🎯<br>লক্ষ্য</button><button class="nv" data-p="3">📊<br>চার্ট</button><button class="nv" data-p="4">💾<br>ডেটা</button></nav>
+<script>
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const fD=m=>{m=Math.floor(m+1e-6);return bn(Math.floor(m/60))+' ঘ '+bn(m%60)+' মি'};
+const fT=m=>{m=Math.floor(m);const h=Math.floor(m/60)%24,x=m%60;const p=h<4?'রাত':h<6?'ভোর':h<12?'সকাল':h<15?'দুপুর':h<17?'বিকাল':h<19?'সন্ধ্যা':'রাত';return p+' '+bn(h%12||12)+':'+bn(String(x).padStart(2,'0'))};
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=rng(2026),gauss=()=>Math.sqrt(-2*Math.log(1-R()))*Math.cos(2*Math.PI*R());
+const F=['আব্দুল্লাহ','মাহমুদ','রাকিব','তানভীর','ইমরান','হাসান','সাব্বির','ফয়সাল','নাঈম','আরিফ','মুজাহিদ','ইয়াসিন','সোহান','রিফাত','আনাস','জুবায়ের','তামিম','মিজান','শাকিল','ইফতেখার'];
+const L=['হোসেন','আহমেদ','ইসলাম','রহমান','উদ্দিন','খান','সরকার','মিয়া','চৌধুরী','আলম','হক','শেখ'];
+const S=[];
+const MF=['আব্দুল্লাহ','মাহমুদ','রাকিব','তানভীর','ইমরান','হাসান','সাব্বির','ফয়সাল','নাঈম','আরিফ','মুজাহিদ','ইয়াসিন','সোহান','রিফাত','আনাস','জুবায়ের','তামিম','মিজান','শাকিল','ইফতেখার','মাহিন','রাফসান','সাদমান','আবরার','তাহমিদ','নাফিস','সিয়াম','আবির','হৃদয়','রবিউল','শামীম','জাহিদ','কামরুল','নাজমুল','মেহেদী','শরিফুল','আশিকুর','ফারহান','মুশফিক','তৌহিদ','আদনান','সজীব','রুবেল','মাসুদ','ওমর'],
+MM=['হাসান','আহমেদ','ইসলাম','রহমান','হোসেন','আলম','সাদিক','ফাহিম','রাফি','সাকিব','নূর','মাহফুজ','শাহরিয়ার','তালহা'],
+FF=['ফাতেমা','আয়েশা','মারিয়া','সুমাইয়া','জান্নাত','তাসনিম','নুসরাত','ফারজানা','রুমানা','সাদিয়া','আফরিন','তামান্না','ইশরাত','মেহজাবিন','আনিকা','নাবিলা','ফারিহা','তাহিয়া','সাবিহা','লামিয়া','রিফা','নুরজাহান','সাবরিনা','মাহিয়া','তাবাসসুম','শারমিন','রোকসানা','হাফসা','খাদিজা','জুবাইদা','মরিয়ম','সাজিয়া','নাজিয়া','আরিফা','ইফফাত','ফাইজা','তানজিলা','সুবাইতা','রাইসা','আমেনা','সুলতানা','শাহিনা','জেসমিন','লাবণ্য','ঊর্মি','আতিকা','আবিদা','আদিবা','আফিয়া','আলিয়া','আয়াত','আমিনা','আরিয়া','আনিসা','আসমা','আফসানা','আনজুম','আইরিন','আনিলা','আলিফা','আবেদা','আতিয়া','আদিলা','আজমিনা','আফনান','আনুশকা','আরফা','আসিয়া','আনামিকা','ইসরাত','ইয়াসমিন','ইলমা','ইরিন','ইফা','ইনায়া','উর্বশী','ঐশী','ওয়াফিয়া','কানিজ','কাবেরী','কুসুম','কণিকা','খুশি','ফাবিহা','ফাহমিদা','ফারিয়া','ফারহানা','ফাতিহা','ফিরোজা','ফারাহ','ফাউজিয়া','নওরিন','নাদিয়া','নাজনীন','নাফিসা','নাহিদা','নাঈমা','নায়লা','নিশাত','নীলা','নুজহাত','নুসাইবা','নূরী','মাহফুজা','মাকসুদা','মালিহা','মাশিয়া','মাহবুবা','মিম','মিতু','মুনতাহা','মেহনাজ','মোনালিসা','রাবেয়া','রাফিয়া','রুবাইয়া','রুকাইয়া','রুমাইসা','রিয়া','রিতু','রেহানা','রোজিনা','লিজা','লুবনা','লিনা','শাবনুর','শামিমা','শিফা','শিরিন','শাহনাজ','সানজিদা','সাজ্জাদা','সানিয়া','সাদিকা','সামিহা','সায়মা','সাবেরা','সালমা','সাহিদা','সিদরা','সুমনা','সুরাইয়া','সুমি','সুবর্ণা','সাবা','সাইমা','হালিমা','হাবিবা','হুমায়রা','হাজেরা','হিফজা','হৃদি','জাকিয়া','জারিন','জুহি','জাহানারা','তাসফিয়া','তাহমিনা','তানিয়া','তানহা','তুবা','তাকিয়া','দিলরুবা','দিশা','বুশরা'],
+FM=['আক্তার','খাতুন','ইয়াসমিন','মুনিরা','ইসলাম','নূর','বানু','পারভীন','আফরোজ','সিদ্দিকা','ফেরদৌসী','নাহার','জাহান','আরা'],
+LN=['খান','চৌধুরী','সরকার','মিয়া','আলম','হক','শেখ','মোল্লা','তালুকদার','ভূঁইয়া','সিকদার','প্রামাণিক','মজুমদার','ব্যাপারী','পাটোয়ারী','মন্ডল','বিশ্বাস','হালদার','দেওয়ান','মুন্সী','ফকির','গাজী','সরদার','উদ্দিন','রহমান','ইসলাম','আহমেদ','হোসেন','আকন্দ','খন্দকার'];
+function nm(i){const f=i%2,k=i>>1,A=f?FF:MF,B=f?FM:MM,N=A.length*B.length*LN.length,j=(k*7919)%N;return A[j%A.length]+' '+B[Math.floor(j/A.length)%B.length]+' '+LN[Math.floor(j/(A.length*B.length))]}
+function pl(tot,k,s,e){const w=Array.from({length:k},()=>.5+R()),ws=w.reduce((a,b)=>a+b),g=Array.from({length:k+1},()=>.3+R()),gs=g.reduce((a,b)=>a+b),gt=e-s-tot;let c=s+g[0]/gs*gt,o=[];for(let j=0;j<k;j++){const d=tot*w[j]/ws;o.push([c,c+d]);c+=d+g[j+1]/gs*gt}return o}
+for(let i=0;i<30000;i++){
+  const T=(i%3<2?10:5+R()*4.8)*60,Mo=Math.min(330,T*(.4+.2*R()));
+  const ms=R()<.1?200+R()*100:360+R()*90,es=R()<.1?1440:1350;
+  const ss=[...pl(Mo,2+Math.floor(R()*2),ms,780),...pl(T-Mo,2+Math.floor(R()*3),930+R()*30,es)];
+  S.push({n:nm(i),s:ss});
+}
+const ov=(a,b,t)=>t>a?Math.min(b,t)-a:0;
+const stu=(ss,t)=>ss.reduce((x,[a,b])=>x+ov(a,b,t),0);
+let my=[],extra=0,run=null,tab=1,demo=false,T0=0,LV=new Uint8Array(30000),LVN=0,lim=20;
+const nowM=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()+d.getSeconds()/60};
+const on=s=>s.s.some(([a,b])=>T0>=a&&T0<b);
+function merged(x){const s=[...my,...(x||[])].sort((x,y)=>x[0]-y[0]),o=[];for(const v of s){if(o.length&&v[0]<=o[o.length-1][1])o[o.length-1][1]=Math.max(o[o.length-1][1],v[1]);else o.push([...v])}return o}
+const meMin=t=>stu(merged(run!=null&&t>run?[[run,t]]:[]),t)+extra*t/1440;
+const $=id=>document.getElementById(id);
+function row(r,k,top){const me=r.i<0;return `<div class="r${me?' me':''}"><div class="bar" style="width:${Math.min(100,r.m/top*100)}%"></div><div class="k">${k<=3?['🥇','🥈','🥉'][k-1]:bn(k)}</div><div class="n">${me?(run!=null?'🟢 ':'')+'⭐ '+(DB.name||'আপনি'):(LV[r.i]?'🟢 ':'')+S[r.i].n}</div><div class="t">${fD(r.m)}</div></div>`}
+function render(){
+  if(ready&&!DB.name&&$('ob').style.display!=='flex')askName();$('myn').textContent=DB.name||'আপনি';if(dk()!==CD){save();CD=dk();my=[];extra=0;run=null;chips()}const t=nowM();T0=t;let nl=0;for(let i=0;i<S.length;i++){const v=on(S[i])?1:0;LV[i]=v;nl+=v}LVN=nl;$('tl').textContent=fT(t)+' 🔴 লাইভ';
+  const arr=S.map((s,i)=>({i,m:stu(s.s,t)}));arr.push({i:-1,m:meMin(t)});arr.sort((a,b)=>b.m-a.m);
+  const top=arr[0].m||1,avg=arr.reduce((x,r)=>x+r.m,0)/arr.length;
+  $('sa').textContent=fD(avg);$('sn').textContent=bn(LVN);$('ban').innerHTML='🔴 কুমিল্লা বিশ্ববিদ্যালয়ের ল-তে চান্স পেতে বর্তমানে লাইভ <b>'+bn(LVN)+'</b> জন পড়তেছে';$('st').textContent=fD(arr[0].m);
+  const mi=arr.findIndex(r=>r.i<0);$('mr').textContent='#'+bn(mi+1);$('mt').textContent=fD(arr[mi].m);$('sw').textContent=run==null?'▶ পড়া শুরু করুন':'⏹ থামান';$('swt').textContent=run!=null?'🟢 পড়ছেন: '+fD(Math.max(0,t-run)):'';
+  $('mp').textContent='আপনি সেরা '+bn(Math.max(0.1,((mi+1)/arr.length*100)).toFixed(1))+'% এর মধ্যে'+(mi>0?' · ঠিক উপরের জন থেকে '+fD(arr[mi-1].m-arr[mi].m)+' পিছনে':' · আপনি এক নম্বরে! 🎉');
+  const q=$('q').value.trim();let h='';
+  let LA=arr;if(per!=='d'){const pvs=pv(per==='w'?6:29);LA=S.map((s,i)=>({i,m:stu(s.s,t)*(per==='w'?4.5+(i*7%25)/10:18+(i*13%90)/10)}));LA.push({i:-1,m:meMin(t)+pvs});LA.sort((a,b)=>b.m-a.m)}
+  if(flt==='b')LA=LA.filter(r=>r.i<0||r.i%2==0);else if(flt==='g')LA=LA.filter(r=>r.i<0||r.i%2==1);else if(flt==='t')LA=LA.slice(0,100);if(unf>=0)LA=LA.filter(r=>r.i<0||r.i%5==unf);
+  const m2=LA.findIndex(r=>r.i<0),top2=LA[0].m||1;
+  if(tab===2){const f=arr.map((r,x)=>[r,x+1]).filter(([r])=>r.i<0?run!=null:(LV[r.i]&&(!q||S[r.i].n.includes(q))));h=f.slice(0,lim).map(([r,k])=>row(r,k,top)).join('')+'<div class="dots">'+bn(f.length)+' জন এখন পড়ছে</div>'}else if(q){const f=arr.map((r,x)=>[r,x+1]).filter(([r])=>r.i>=0&&S[r.i].n.includes(q)).slice(0,100);h=f.map(([r,k])=>row(r,k,top)).join('')||'<div class="dots">কিছু পাওয়া যায়নি</div>'}
+  else{{const rr=[];for(let x=0;x<Math.min(lim,LA.length);x++){if(x===20&&m2>=20)rr.push(pin(LA[m2],m2,top2));if(x===m2&&m2>=20)continue;rr.push(row(LA[x],x+1,top2))}if(lim<=20&&m2>=20)rr.push(pin(LA[m2],m2,top2));h=rr.join('')}}
+  charts();dlist();goal();feat(arr,mi,t);$('lb').innerHTML=h;$('more').style.display=(lim>=10000||(tab===1&&q))?'none':'';
+}
+function chips(){save();hist();$('chips').innerHTML=(UN?'<span class="chip" data-u="1">↩ ফিরিয়ে আনুন</span>':'')+my.map((v,i)=>`<span class="chip" data-e="${i}">${fT(v[0])}–${fT(v[1])}${v[2]?' · '+v[2]:''}<i data-d="${i}">✕</i></span>`).join('')+(extra?`<span class="chip">মোট +${fD(extra)}<i data-d="x">✕</i></span>`:'')}
+const tm=v=>{const[h,m]=v.split(':').map(Number);return h*60+m};
+$('add').onclick=()=>{let a=tm($('a').value),b=tm($('b').value);if(b===0)b=1440;if(b<=a)return;my.push([a,b,$('sj').value]);chips();render()};
+$('addx').onclick=()=>{const m=(+$('eh').value||0)*60+(+$('em').value||0);if(m>0){extra+=m;$('eh').value=$('em').value='';chips();render()}};
+$('chips').onclick=e=>{const D=e.target.dataset;if(D.e!=null){const s=my[+D.e],p=n=>String(Math.floor(n/60)%24).padStart(2,'0')+':'+String(Math.floor(n%60)).padStart(2,'0'),v=prompt('সময় বদলান (শুরু-শেষ, যেমন 08:00-10:30)',p(s[0])+'-'+(s[1]>=1440?'24:00':p(s[1])));if(!v)return;const m=v.match(/(\d+):(\d+)\s*-\s*(\d+):(\d+)/);if(!m)return toast('❌ ফরম্যাট ঠিক নয়');const a=+m[1]*60+ +m[2],b=+m[3]*60+ +m[4];if(b<=a||b>1440)return toast('❌ সময় ঠিক নয়');s[0]=a;s[1]=b}else if(D.u!=null){if(UN){my.push(UN);UN=null}}else if(D.d!=null){if(D.d==='x')extra=0;else UN=my.splice(+D.d,1)[0]}else return;chips();render()};
+$('q').oninput=()=>{lim=20;render()};$('more').onclick=()=>{lim+=500;render()};
+$('t1').onclick=()=>{tab=1;$('t1').className='';$('t2').className='g';render()};
+$('t2').onclick=()=>{tab=2;$('t2').className='';$('t1').className='g';render()};
+$('sw').onclick=()=>{if(run==null){run=nowM()}else{const e=nowM();if(e-run>=0.2)my.push([run,e,$('sj').value]);run=null;chips()}save();render()};
+const dk=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+let DB={days:{}},CD=dk(),ready=false;
+function idb(f){try{const r=indexedDB.open('sr',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>f(r.result);r.onerror=()=>f(null)}catch(e){f(null)}}
+function save(){if(!ready)return;DB.days[CD]={my,extra,run};const s=JSON.stringify(DB);try{localStorage.setItem('sr2',s)}catch(e){}idb(db=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(s,'sr2')}catch(e){}})}
+function apply(s){try{const o=JSON.parse(s);if(o&&o.days){DB=o;const t=o.days[CD];if(t){my=t.my||[];extra=t.extra||0;run=t.run==null?null:t.run}}}catch(e){}}
+function dayTot(d){const s=[...(d.my||[])].sort((x,y)=>x[0]-y[0]);let tot=0,e=-1;for(const[a,b]of s){if(a>e){tot+=b-a;e=b}else if(b>e){tot+=b-e;e=b}}return tot+(d.extra||0)}
+function hist(){const k=Object.keys(DB.days).filter(x=>x!==CD).sort().reverse().slice(0,7);$('hist').innerHTML=k.length?'আগের দিন: '+k.map(x=>bn(x)+' → '+fD(dayTot(DB.days[x]))).join(' · '):''}
+const fk=x=>x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+function mg(a){const s=[...a].sort((x,y)=>x[0]-y[0]),o=[];for(const v of s){if(o.length&&v[0]<=o[o.length-1][1])o[o.length-1][1]=Math.max(o[o.length-1][1],v[1]);else o.push([...v])}return o}
+function dInt(k){const n=nowM();return k===CD?mg([...my,...(run!=null&&n>run?[[run,n]]:[])]):mg((DB.days[k]||{}).my||[])}
+const dMin=k=>dInt(k).reduce((x,[a,b])=>x+b-a,0)+(k===CD?extra:((DB.days[k]||{}).extra||0));
+function barSvg(v,lb,u,mt,st){const W=320,H=170,l=30,b=24,t=10,r=6,pw=W-l-r,ph=H-t-b,top=Math.ceil(Math.max(mt,...v)/st)*st,bw=pw/v.length;let s=`<svg viewBox='0 0 ${W} ${H}' style='width:100%;height:auto'>`;for(let i=0;i<=2;i++){const y=t+ph-ph*i/2;s+=`<line class='gl' x1='${l}' x2='${W-r}' y1='${y}' y2='${y}'/><text class='tx' x='${l-4}' y='${y+3}' text-anchor='end'>${bn(Math.round(top*i/2/u*10)/10)}</text>`}v.forEach((x,i)=>{const h=ph*x/top,xx=l+i*bw;s+=`<rect class='bar' x='${xx+bw*.15}' y='${t+ph-h}' width='${bw*.7}' height='${h}' rx='2'/>`;if(lb[i]!=null)s+=`<text class='tx' x='${xx+bw/2}' y='${H-8}' text-anchor='middle'>${lb[i]}</text>`});return s+'</svg>'}
+function lineSvg(v,lb){const W=320,H=170,l=30,b=24,t=10,r=8,pw=W-l-r,ph=H-t-b,top=Math.ceil(Math.max(60,...v)/60)*60,n=v.length,X=i=>l+i*pw/(n-1),Y=x=>t+ph-ph*x/top,a=v.filter(x=>x>0),av=a.length?a.reduce((p,c)=>p+c,0)/a.length:0;let s=`<svg viewBox='0 0 ${W} ${H}' style='width:100%;height:auto'>`;for(let i=0;i<=2;i++){const y=t+ph-ph*i/2;s+=`<line class='gl' x1='${l}' x2='${W-r}' y1='${y}' y2='${y}'/><text class='tx' x='${l-4}' y='${y+3}' text-anchor='end'>${bn(Math.round(top*i/2/60*10)/10)}</text>`}s+=`<polyline class='ln' points='${v.map((x,i)=>X(i)+','+Y(x)).join(' ')}'/>`;v.forEach((x,i)=>{s+=`<circle class='dt' cx='${X(i)}' cy='${Y(x)}' r='2'/>`;if(i%5==0||i==n-1)s+=`<text class='tx' x='${X(i)}' y='${H-8}' text-anchor='middle'>${lb[i]}</text>`});if(av)s+=`<line class='av' x1='${l}' x2='${W-r}' y1='${Y(av)}' y2='${Y(av)}'/>`;return s+'</svg>'}
+let ct=1;
+function charts(){document.querySelectorAll('[data-c]').forEach(b=>b.className=+b.dataset.c===ct?'':'g');const keys=Object.keys(DB.days);if(!keys.includes(CD))keys.push(CD);const all=keys.map(k=>({k,m:dMin(k)})),D=new Date(),L=n=>Array.from({length:n},(_,i)=>{const x=new Date(D.getFullYear(),D.getMonth(),D.getDate()-(n-1-i));return{k:fk(x),d:x.getDate()}});let s='',cap='';
+if(ct===1){const l=L(14);s=barSvg(l.map(o=>dMin(o.k)),l.map(o=>bn(o.d)),60,60,60);cap='শেষ ১৪ দিন — প্রতিদিন কত ঘণ্টা পড়েছেন (তারিখ অনুযায়ী)'}
+else if(ct===2){const l=L(30),v=l.map(o=>dMin(o.k)),a=v.filter(x=>x>0);s=lineSvg(v,l.map(o=>bn(o.d)));cap='শেষ ৩০ দিনের ট্রেন্ড — ড্যাশ লাইন = গড় '+fD(a.length?a.reduce((p,c)=>p+c,0)/a.length:0)}
+else if(ct===3){const h=Array(24).fill(0);let nd=0;for(const k of keys){const iv=dInt(k);if(iv.length)nd++;for(const[a,b]of iv)for(let q=Math.floor(a/60);q<=Math.floor((b-1e-9)/60)&&q<24;q++)h[q]+=Math.max(0,Math.min(b,(q+1)*60)-Math.max(a,q*60))}s=barSvg(h.map(x=>x/Math.max(1,nd)),h.map((_,i)=>i%3==0?bn(i):null),1,15,15);cap='দিনের কোন ঘণ্টায় (০–২৩) গড়ে কত মিনিট পড়েন'}
+else if(ct===6){let h='<svg viewBox="0 0 320 110" style="width:100%">';for(let i=0;i<84;i++){const d=new Date();d.setDate(d.getDate()-83+i);const m=dMin(fk(d)),a=m<=0?0:Math.min(1,.25+m/G()*.75);h+='<rect x="'+(Math.floor(i/7)*26+4)+'" y="'+(i%7*15+2)+'" width="22" height="12" rx="3" fill="var(--ac)" opacity="'+(a||.12)+'"/>'}s=h+'</svg>';cap='শেষ ১২ সপ্তাহ — গাঢ় রঙ = বেশি পড়া (লক্ষ্যের কাছাকাছি = সবচেয়ে গাঢ়)'}
+else if(ct===5){const o={},add=a=>a.forEach(v=>{const k=v[2]||'অন্যান্য';o[k]=(o[k]||0)+v[1]-v[0]});for(const k of keys)add(k===CD?my:((DB.days[k]||{}).my||[]));const e=Object.entries(o);s=e.length?barSvg(e.map(x=>x[1]),e.map(x=>x[0].slice(0,6)),60,60,60):'';cap='সব দিনের মোট — কোন বিষয়ে কত ঘণ্টা পড়েছেন'+(e.length?'':' (এখনো ডেটা নেই)')}
+else{const sm=Array(7).fill(0),c=Array(7).fill(0);for(const o of all)if(o.m>0){const[y,m,d]=o.k.split('-').map(Number),w=new Date(y,m-1,d).getDay();sm[w]+=o.m;c[w]++}s=barSvg(sm.map((x,i)=>x/Math.max(1,c[i])),['রবি','সোম','মঙ্গল','বুধ','বৃহ','শুক্র','শনি'],60,60,60);cap='সপ্তাহের কোন বারে গড়ে কত ঘণ্টা পড়েন'}
+$('cs').innerHTML=s;$('cn').textContent=cap;const act=all.filter(o=>o.m>0),tot=all.reduce((x,o)=>x+o.m,0),best=act.reduce((a,o)=>o.m>a.m?o:a,{m:0,k:''});$('sm').innerHTML='মোট: <b>'+fD(tot)+'</b> · রেকর্ড করা দিন: <b>'+bn(act.length)+'</b><br>দিনে গড়: <b>'+fD(act.length?tot/act.length:0)+'</b> · সেরা দিন: <b>'+(best.k?bn(best.k)+' ('+fD(best.m)+')':'—')+'</b>'}
+function askName(){$('nm').value=DB.name||'';$('ob').style.display='flex'}
+$('nb').onclick=()=>{const v=$('nm').value.trim();if(!v)return;DB.name=v;$('ob').style.display='none';save();render()};
+$('ed').onclick=askName;
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ct=+b.dataset.c;charts()});
+const PG={home:1,rank:2,chart:3,data:4,goal:5},PN=['','home','rank','chart','data','goal'];let cur=PG[location.hash.slice(1)]||1,dlS='';
+function show(){document.querySelectorAll('.pg').forEach(e=>e.classList.toggle('on',e.id==='p'+cur));document.querySelectorAll('.nv').forEach(b=>b.classList.toggle('on',+b.dataset.p===cur));$('top').style.display=(cur===1||cur===2)?'':'none';scrollTo(0,0)}
+document.querySelectorAll('.nv').forEach(b=>b.onclick=()=>{cur=+b.dataset.p;show();try{history.replaceState(null,'','#'+PN[cur])}catch(e){}});
+addEventListener('hashchange',()=>{cur=PG[location.hash.slice(1)]||cur;show()});
+function dlist(){const k=Object.keys(DB.days);if(!k.includes(CD))k.push(CD);k.sort().reverse();const tot=k.reduce((x,a)=>x+dMin(a),0);$('tot').innerHTML='মোট পড়া: <b>'+fD(tot)+'</b> · দিন: <b>'+bn(k.length)+'</b>';const h=k.map(a=>'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--bd)"><span>'+bn(a)+'</span><span>'+fD(dMin(a))+' · '+bn(dInt(a).length)+' সেশন</span></div>').join('');if(h!==dlS){dlS=h;$('dl').innerHTML=h}}
+const msg=t=>{$('ms').textContent=t};
+function expData(){return JSON.stringify(Object.assign({app:'study-rank',v:1,at:new Date().toISOString()},DB,{days:Object.assign({},DB.days,{[CD]:{my,extra,run}})}),null,1)}
+$('ex').onclick=()=>{DB.lx=Date.now();save();const b=new Blob([expData()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='study-rank-'+CD+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);msg('ফাইল ডাউনলোড হচ্ছে। না হলে "কপি করুন" বাটন ব্যবহার করুন।')};
+$('cp').onclick=async()=>{DB.lx=Date.now();save();try{await navigator.clipboard.writeText(expData());msg('✅ কপি হয়েছে — কোথাও পেস্ট করে সেভ করে রাখুন')}catch(e){$('ta').value=expData();$('ta').select();msg('কপি হয়নি — নিচের বক্সের টেক্সট নিজে কপি করুন')}};
+function doImport(t){try{const o=JSON.parse(t);if(!o||typeof o.days!=='object'||Array.isArray(o.days))throw 0;for(const k in o.days){const d=o.days[k];if(!d||!Array.isArray(d.my))o.days[k]={my:[],extra:0,run:null}}if(!o.name)o.name=DB.name;my=[];extra=0;run=null;apply(JSON.stringify(o));ready=true;save();chips();render();msg('✅ ইমপোর্ট সফল — '+bn(Object.keys(o.days).length)+' দিনের ডেটা ফিরে এসেছে')}catch(e){msg('❌ ফাইলটি সঠিক নয়')}}
+$('im').onclick=()=>$('fi').click();
+$('fi').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>doImport(r.result);r.readAsText(f);e.target.value=''};
+$('ip').onclick=()=>doImport($('ta').value);
+function pin(r,mi,top){const n=dInt(CD).length;return '<div class="dots" style="font-size:12px;margin-top:4px">⋮ আপনার আজকের ডেটা · '+bn(CD)+' · '+bn(n)+' সেশন ⋮</div>'+row(r,mi+1,top)}
+let TOT=0,glim=20,gk='';
+const gName=r=>nm((r*7919)%30000);
+function grow(r,k,tm){return `<div class='r'><div class='bar' style='width:${Math.min(100,tm/200)}%'></div><div class='k'>${k<=3?['🥇','🥈','🥉'][k-1]:bn(k)}</div><div class='n'>${gName(r)}</div><div class='t'>${fD(tm)}</div></div>`}
+function gme(k){return `<div class='r me'><div class='k'>${bn(k)}</div><div class='n'>⭐ ${DB.name||'আপনি'}</div><div class='t'>${fD(TOT)}</div></div>`}
+function goal(){const ks=Object.keys(DB.days);if(!ks.includes(CD))ks.push(CD);const tot=Math.floor(ks.reduce((x,k)=>x+dMin(k),0)+1e-6);TOT=tot;const ru=Math.max(1,20001-tot);
+$('gr').textContent='#'+bn(ru);$('gt').textContent=fD(tot);$('gp').textContent='✅ '+bn(Math.min(20000,tot))+' জন স্টুডেন্টকে পেছনে ফেলেছেন';$('gl').textContent=tot>=20000?'🎉 আপনি ১ম স্থানে!':'১ম হতে বাকি: '+fD(20000-tot)+' ('+bn(20000-tot)+' মিনিট)';$('gb').style.width=Math.min(100,tot/200)+'%';
+const key=tot+'|'+glim+'|'+DB.name;if(key===gk)return;gk=key;
+const at=k=>k<ru?grow(k,k,20001-k):grow(k-1,k,20001-(k-1));
+let n='';for(let k=Math.max(1,ru-5);k<ru;k++)n+=at(k);n+=gme(ru);for(let k=ru+1;k<=Math.min(20001,ru+5);k++)n+=at(k);$('gn').innerHTML=n;
+let h='';const L=Math.min(glim,20001);for(let k=1;k<=L;k++){if(k===21&&ru>20)h+="<div class='dots'>⋮</div>"+gme(ru);if(k===ru&&ru>20)continue;h+=k===ru?gme(ru):at(k)}if(L<=20&&ru>20)h+="<div class='dots'>⋮</div>"+gme(ru);
+$('gls').innerHTML=h;$('gmore').style.display=glim>=20001?'none':''}
+$('gmore').onclick=()=>{glim+=500;gk='';goal()};
+show();
+let dc=0;($('del')||{}).onclick=()=>{if(!dc){dc=1;$('del').textContent='⚠️ আবার চাপুন — মুছে যাবে';setTimeout(()=>{dc=0;$('del').textContent='🗑 সব ডেটা মুছুন'},4000);return}my=[];extra=0;run=null;DB={days:{},name:DB.name};try{localStorage.removeItem('sr2')}catch(e){}idb(db=>{try{db&&db.transaction('k','readwrite').objectStore('k').delete('sr2')}catch(e){}});dc=0;$('del').textContent='🗑 সব ডেটা মুছুন';chips();render()};
+let WL=null,UN=null,unf=-1,AC=null,NS=null,flt='all',per='d',foc=false,LP=null,PR=null,lastS=0,sjK='';
+const G=()=>DB.goal||480,SB=()=>DB.subs||['আইন','ইংরেজি','বাংলা','GK','গণিত','অন্যান্য'];
+function toast(m){const d=document.createElement('div');d.textContent=m;d.style.cssText='position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--ac);color:var(--card);padding:8px 14px;border-radius:20px;z-index:99;font-size:14px';document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
+function pv(n){let s=0;for(let i=1;i<=n;i++){const x=new Date();x.setDate(x.getDate()-i);s+=dMin(fk(x))}return s}
+function stk(){let c=0;const x=new Date();const fz=DB.fz||[],ok=d=>dMin(fk(d))>=G()||fz.includes(fk(d));if(!ok(x))x.setDate(x.getDate()-1);while(c<3650&&ok(x)){c++;x.setDate(x.getDate()-1)}return c}
+function feat(arr,mi,t){
+ const D=new Date(),tdy=dMin(CD),ks=Object.keys(DB.days);if(!ks.includes(CD))ks.push(CD);const tot=ks.reduce((x,k)=>x+dMin(k),0);
+ const th=DB.theme;if(th==='light'||th==='dark')document.documentElement.dataset.theme=th;else delete document.documentElement.dataset.theme;$('th').textContent=th==='dark'?'🌙 ডার্ক':th==='light'?'☀️ লাইট':'🌓 অটো';
+ try{$('dt').textContent=D.toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){$('dt').textContent=bn(CD)}
+ const al=[];if(tdy===0&&D.getHours()>=8)al.push('⏰ আজ এখনও পড়া শুরু হয়নি');if(tot>0&&(!DB.lx||Date.now()-DB.lx>6048e5))al.push('💾 এক সপ্তাহ হয়ে গেছে — "ডেটা" পেজ থেকে এক্সপোর্ট করে রাখুন');$('al').innerHTML=al.join('<br>');
+ if(DB.rem&&tdy===0&&D.getHours()>=10&&DB.rn!==CD){DB.rn=CD;save();try{new Notification('📚 আজ এখনও পড়া শুরু হয়নি')}catch(e){}}
+ $('rb').textContent=DB.rem?'🔔 রিমাইন্ডার: চালু':'🔕 রিমাইন্ডার: বন্ধ';
+ const g=G(),p=Math.min(100,tdy/g*100),sk=stk();DB.bs=Math.max(DB.bs||0,sk);
+ $('ring').style.setProperty('--p',p);$('rt').textContent=bn(Math.round(p))+'%';
+ if(document.activeElement!==$('gh'))$('gh').value=g/60;
+ $('sk').innerHTML='আজ: <b>'+fD(tdy)+'</b> / '+fD(g)+'<br>🔥 স্ট্রিক: <b>'+bn(sk)+' দিন</b>';
+ const B=[[tot>=1,'🌱 প্রথম পড়া'],[tot>=1000,'⏱ ১০০০ মিনিট'],[tot>=6000,'🏅 ১০০ ঘণ্টা'],[DB.bs>=7,'🔥 ৭ দিনের স্ট্রিক'],[DB.bs>=30,'🏆 ৩০ দিনের স্ট্রিক'],[ks.some(k=>dMin(k)>=600),'💪 ১০ ঘণ্টার দিন']];
+ $('bd').innerHTML=B.map(([o,n])=>'<span class="chip" style="'+(o?'':'opacity:.35;filter:grayscale(1)')+'">'+n+'</span>').join('');
+ const el=run!=null?Math.max(0,t-run):0,ph=run!=null&&DB.pom?(el%30<25?0:1):-1;
+ if(LP!=null&&ph>=0&&LP>=0&&ph!==LP){toast(ph?'☕ ৫ মিনিট বিরতি নিন':'📖 আবার পড়া শুরু করুন');try{navigator.vibrate(300)}catch(e){}}LP=ph;
+ const pt=ph<0?'':ph?'☕ বিরতি — বাকি '+fD(30-el%30):'📖 পড়ার সময় — বাকি '+fD(25-el%30);
+ $('pt').textContent=pt;$('pm').textContent=DB.pom?'🍅 পোমোডোরো: চালু':'🍅 পোমোডোরো: বন্ধ';
+ $('fo').style.display=foc&&run!=null?'flex':'none';if(foc&&run!=null){$('fk').textContent=fD(el);$('fr').textContent='এখন আপনি '+bn(mi+1)+' নম্বরে';$('fp').textContent=pt}
+ if(PR!=null&&mi<PR)toast('🎉 আপনি '+bn(PR-mi)+' জনকে ছাড়িয়ে গেলেন!');PR=mi;
+ let x=$('mp').textContent;if(mi>0)x+=' · ধরতে আরও '+bn(Math.ceil(arr[mi-1].m-arr[mi].m))+' মিনিট';
+ DB.rk=DB.rk||{};const y=new Date();y.setDate(y.getDate()-1);const yr=DB.rk[fk(y)];if(yr)x+=' · গতকাল #'+bn(yr)+' → আজ #'+bn(mi+1)+(mi+1<yr?' ↑':mi+1>yr?' ↓':' =');$('mp').textContent=x;
+ if(DB.rk[CD]!==mi+1&&Date.now()-lastS>30000){DB.rk[CD]=mi+1;lastS=Date.now();save()}
+ const sb=SB(),kk=sb.join('|');if(kk!==sjK){const cv=$('sj').value;sjK=kk;$('sj').innerHTML=sb.map(s=>'<option>'+s+'</option>').join('');const w=cv||DB.sel;if(sb.includes(w))$('sj').value=w}
+ if(DB.sel&&!window.sjS&&SB().includes(DB.sel)){$('sj').value=DB.sel;window.sjS=1}
+ updBtn();$('bs').textContent=run==null?'▶ পড়া শুরু করুন':'⏹ থামান · '+fD(el);
+ $('mn').style.display=run!=null&&cur!==1?'flex':'none';$('mnt').textContent='🟢 পড়ছেন: '+fD(el);
+ if(tdy>=g&&DB.cf!==CD){DB.cf=CD;save();confetti();toast('🎉 আজকের লক্ষ্য পূরণ!')}
+ try{if(foc&&run!=null&&!WL){WL=1;navigator.wakeLock.request('screen').then(l=>WL=l).catch(()=>WL=null)}else if((!foc||run==null)&&WL&&WL.release){WL.release();WL=null}}catch(e){WL=null}
+ if(document.activeElement!==$('xd'))$('xd').value=DB.xd||'';if(document.activeElement!==$('xt'))$('xt').value=DB.xt||'';
+ if(DB.xd){const dl=Math.ceil((new Date(DB.xd+'T00:00:00')-new Date(CD+'T00:00:00'))/864e5);$('xs').textContent=dl>=0?'📅 পরীক্ষা: '+bn(dl)+' দিন বাকি'+(DB.xt&&dl>0?' · রোজ গড়ে '+bn(Math.max(0,(DB.xt*60-tot)/dl/60).toFixed(1))+' ঘণ্টা পড়লে '+bn(DB.xt)+' ঘণ্টার লক্ষ্য পূরণ':''):'📅 পরীক্ষার তারিখ পেরিয়ে গেছে'}else $('xs').textContent='';
+ const o={};for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const k=fk(d);(k===CD?my:((DB.days[k]||{}).my||[])).forEach(v=>{const n=v[2]||'অন্যান্য';o[n]=(o[n]||0)+v[1]-v[0]})}const bs=Object.entries(o).sort((a,b)=>b[1]-a[1])[0],w1=pv(6)+tdy,w0=pv(13)-pv(6);
+ $('wr').innerHTML='📋 <b>সাপ্তাহিক রিপোর্ট</b> (শেষ ৭ দিন)<br>মোট: <b>'+fD(w1)+'</b> · আগের সপ্তাহ: '+fD(w0)+(w1>=w0?' ↑ ':' ↓ ')+fD(Math.abs(w1-w0))+'<br>সেরা বিষয়: <b>'+(bs?bs[0]+' ('+fD(bs[1])+')':'—')+'</b>';
+ const mk=DB.mk||[];$('mkv').innerHTML=mk.length?barSvg(mk.slice(-10).map(m=>m.s/m.t*100),mk.slice(-10).map(m=>bn(Math.round(m.s/m.t*100))),1,100,100)+'<div class="sub">গড়: '+bn(Math.round(mk.reduce((a,m)=>a+m.s/m.t*100,0)/mk.length))+'% · শেষ '+bn(Math.min(10,mk.length))+'টি টেস্ট (শতাংশে)</div>':'<div class="sub">এখনো কোনো টেস্ট যোগ হয়নি</div>';
+}
+$('th').onclick=()=>{const c=DB.theme||'auto';DB.theme=c==='auto'?'light':c==='light'?'dark':'auto';save();render()};
+$('pm').onclick=()=>{DB.pom=!DB.pom;save();render()};
+$('fc').onclick=()=>{if(run==null)$('sw').onclick();foc=true;render()};$('fs').onclick=()=>{foc=false;$('sw').onclick()};$('fx').onclick=()=>{foc=false;render()};
+$('gh').onchange=()=>{const v=parseFloat($('gh').value);if(v>0){DB.goal=Math.round(Math.min(16,v)*60);save();render()}};
+$('rb').onclick=()=>{if(DB.rem){DB.rem=false;save();render();return}try{Notification.requestPermission().then(p=>{DB.rem=p==='granted';save();render();if(!DB.rem)toast('নোটিফিকেশনের অনুমতি পাওয়া যায়নি')})}catch(e){toast('এই ব্রাউজারে নোটিফিকেশন চলবে না')}};
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;lim=20;document.querySelectorAll('[data-f]').forEach(x=>x.className=x===b?'':'g');render()});
+document.querySelectorAll('[data-p2]').forEach(b=>b.onclick=()=>{per=b.dataset.p2;lim=20;document.querySelectorAll('[data-p2]').forEach(x=>x.className=x===b?'':'g');render()});
+function confetti(){for(let i=0;i<50;i++){const e=document.createElement('div');e.textContent=['🎉','✨','🟢','⭐'][i%4];e.style.cssText='position:fixed;top:-20px;left:'+Math.random()*100+'%;z-index:99;font-size:20px;pointer-events:none';document.body.appendChild(e);e.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY('+(innerHeight+40)+'px) rotate(360deg)',opacity:.3}],{duration:1800+Math.random()*1500}).onfinish=()=>e.remove()}}
+$('bs').onclick=$('mns').onclick=()=>$('sw').onclick();
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{extra+=+b.dataset.q;chips();render()});
+$('fz').onclick=()=>{const m=CD.slice(0,7),z=DB.fz||[];if(z.some(d=>d.startsWith(m)))return toast('এই মাসে ফ্রিজ ব্যবহার হয়ে গেছে');DB.fz=[...z,CD];save();toast('🧊 আজ ছুটি — স্ট্রিক বাঁচল');render()};
+$('xd').onchange=()=>{DB.xd=$('xd').value;save();render()};$('xt').onchange=()=>{DB.xt=parseFloat($('xt').value)||0;save();render()};
+$('mka').onclick=()=>{const a=parseFloat($('mks').value),t=parseFloat($('mkt').value);if(!(a>=0&&t>0&&a<=t))return toast('❌ নম্বর ঠিক নয়');DB.mk=[...(DB.mk||[]),{d:CD,s:a,t}];$('mks').value='';save();render()};
+$('mkd').onclick=()=>{DB.mk=(DB.mk||[]).slice(0,-1);save();render()};
+document.querySelectorAll('[data-u2]').forEach(b=>b.onclick=()=>{unf=+b.dataset.u2;lim=20;document.querySelectorAll('[data-u2]').forEach(x=>x.className=x===b?'':'g');render()});
+$('fn').onclick=()=>{if(NS){NS.stop();NS=null;$('fn').textContent='🌧 সাউন্ড: বন্ধ';return}AC=AC||new(window.AudioContext||window.webkitAudioContext)();const n=AC.sampleRate*2,b=AC.createBuffer(1,n,AC.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){l=(l+.02*(Math.random()*2-1))/1.02;d[i]=l*3.5}NS=AC.createBufferSource();NS.buffer=b;NS.loop=true;const g=AC.createGain();g.gain.value=.6;NS.connect(g);g.connect(AC.destination);NS.start();$('fn').textContent='🌧 সাউন্ড: চালু'};
+$('sh').onclick=async()=>{try{await document.fonts.load('700 40px "Hind Siliguri"')}catch(e){}
+const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),F='"Hind Siliguri","Noto Sans Bengali",sans-serif';
+const g0=x.createLinearGradient(0,0,W,H);g0.addColorStop(0,'#0b5d3b');g0.addColorStop(1,'#16a06a');x.fillStyle=g0;x.fillRect(0,0,W,H);
+x.fillStyle='rgba(255,255,255,.07)';[[950,120,320],[80,1200,380],[1000,900,180]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,7);x.fill()});
+const T=(t,px,y,w='700',col='#fff',xx=W/2)=>{x.font=w+' '+px+'px '+F;x.fillStyle=col;x.textAlign='center';x.fillText(t,xx,y)};
+const tdy=dMin(CD),p=Math.min(1,tdy/G());
+T('📚 স্টাডি র‍্যাংকিং',48,120);T($('dt').textContent,32,175,'400','rgba(255,255,255,.75)');T(DB.name||'আমি',68,300);
+const cx=W/2,cy=640,r=240;x.lineWidth=46;x.lineCap='round';x.strokeStyle='rgba(255,255,255,.18)';x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();
+if(p>0){x.strokeStyle='#fff';x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+p*Math.PI*2);x.stroke()}
+T(fD(tdy),76,cy+10);T('আজ পড়েছি · লক্ষ্য '+fD(G()),30,cy+70,'400','rgba(255,255,255,.8)');
+[['🏆','র‍্যাংক',$('mr').textContent],['🔥','স্ট্রিক',bn(stk())+' দিন'],['🎯','লক্ষ্য',bn(Math.round(p*100))+'%']].forEach((t,i)=>{const w=300,gx=(W-3*w)/4,X=gx+i*(w+gx),Y=1000;x.fillStyle='rgba(255,255,255,.16)';x.beginPath();(x.roundRect||x.rect).call(x,X,Y,w,210,32);x.fill();T(t[0]+' '+t[1],32,Y+65,'400','rgba(255,255,255,.8)',X+w/2);T(t[2],60,Y+150,'700','#fff',X+w/2)});
+T('আমার সাথে পড়ো, র‍্যাংকে উঠো 💪',34,1290,'400','rgba(255,255,255,.85)');
+c.toBlob(b=>{const f=new File([b],'study.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});else{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='study-card.png';a.click()}})};
+try{if(location.protocol.startsWith('http')&&'serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+$('sj').onchange=()=>{DB.sel=$('sj').value;save()};
+let mEd=-1,mDl=-1;const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function updBtn(){$('sbtn').textContent='📚 '+($('sj').value||SB()[0])+' ▾'}
+function sbm(){const l=SB(),cur=$('sj').value;$('sl').innerHTML=l.map((x,i)=>i===mEd?`<div class="rowf"><input id="se" value="${esc(x)}" style="flex:1"><button data-a="ok" data-i="${i}">✔</button><button class="g" data-a="no">✕</button></div>`:i===mDl?`<div class="rowf">"${esc(x)}" মুছবেন?<button data-a="yes" data-i="${i}">হ্যাঁ</button><button class="g" data-a="no">না</button></div>`:`<div class="rowf" style="padding:4px 0;border-bottom:1px solid var(--bd)"><button class="${x===cur?'':'g'}" data-a="pick" data-i="${i}" style="flex:1;text-align:left">${x===cur?'✅ ':''}${esc(x)}</button><button class="g" data-a="ed" data-i="${i}">✏️</button><button class="g" data-a="del" data-i="${i}">🗑</button></div>`).join('')}
+$('sbtn').onclick=()=>{mEd=mDl=-1;sbm();$('sm2').style.display='flex'};
+$('sx2').onclick=()=>{$('sm2').style.display='none'};$('sm2').onclick=e=>{if(e.target===$('sm2'))$('sm2').style.display='none'};
+$('sl').onclick=e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.a,i=+b.dataset.i,l=SB(),o=l[i],cur=$('sj').value;
+if(a==='pick'){$('sj').value=o;DB.sel=o;save();$('sm2').style.display='none'}
+else if(a==='ed'){mEd=i;mDl=-1}else if(a==='del'){mDl=i;mEd=-1}else if(a==='no'){mEd=mDl=-1}
+else if(a==='ok'){const v=$('se').value.trim();if(!v)return;if(v!==o&&l.includes(v))return toast('এই নামে বিষয় আছে');DB.subs=l.map(x=>x===o?v:x);const fix=r=>(r||[]).forEach(q=>{if(q[2]===o)q[2]=v});fix(my);for(const k in DB.days)fix(DB.days[k].my);if(cur===o)DB.sel=v;save();sjK='';render();if(cur===o)$('sj').value=v;mEd=-1}
+else if(a==='yes'){if(l.length<2){toast('অন্তত একটি বিষয় রাখতে হবে')}else{DB.subs=l.filter(x=>x!==o);if(cur===o)DB.sel=DB.subs[0];save();sjK='';render();if(cur===o)$('sj').value=DB.sel}mDl=-1}
+sbm();updBtn()};
+$('sa5').onclick=()=>{const v=$('sn2').value.trim();if(!v)return;if(SB().includes(v))return toast('এই নামে বিষয় আছে');DB.subs=[...SB(),v];DB.sel=v;save();sjK='';render();$('sj').value=v;$('sn2').value='';sbm();updBtn()};
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+let ls=null;try{ls=localStorage.getItem('sr2')}catch(e){}
+if(ls){apply(ls);ready=true}else{setTimeout(()=>{ready=true;chips();render()},1500);idb(db=>{try{if(!db)throw 0;const g=db.transaction('k').objectStore('k').get('sr2');g.onsuccess=()=>{if(g.result)apply(g.result);ready=true;chips();render()};g.onerror=()=>{ready=true}}catch(e){ready=true}})}
+chips();render();setInterval(()=>{if(!demo)render()},1000);
+</script></body></html>
